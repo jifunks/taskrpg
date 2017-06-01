@@ -1,0 +1,66 @@
+
+body {
+    font-family: 'VT323', monospace;
+
+}
+
+#headerbar h1 {
+    background-color: #00A0F5;
+    color: #FFF;
+    font-size: 4em;
+    margin: 0;
+    padding: 10px 0 10px 20px;
+}
+
+#tasklist {
+
+}
+#tasklist ul{
+    list-style-type: none;
+    padding: 0;
+    margin: 10px 10px 10px 10px;
+}
+
+#tasklist li {
+    font-size: 1.5em;
+    margin: 0 0 8px 0;
+    -o-transition:0.2s;
+    -ms-transition:0.2s;
+    -moz-transition:0.2s;
+    -webkit-transition:0.2s;
+    /* ...and now for the proper property */
+    transition:0.2s;
+}
+
+#tasklist li:hover {
+    background-color: #e8f6ff;
+}
+
+.taskwrapper {
+    text-transform: lowercase;
+
+}
+
+.taskwrapper h4{
+    margin: 0;
+    font-size: 1.5em;
+    display: inline;
+    vertical-align: middle;
+}
+
+.taskwrapper p {
+    margin: 0;
+    font-size: 0.75em;
+    display: inline;
+    color: #CCC;
+    float:right;
+    line-height: 33px;
+    vertical-align: middle;
+
+}
+
+.taskwrapper input[type="checkbox"] {
+    position: relative;
+
+}
+

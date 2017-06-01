@@ -1,0 +1,20 @@
+{% load staticfiles %}
+
+<html>
+    <head>
+        <title>TaskRPG</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link href="https://fonts.googleapis.com/css?family=VT323" rel="stylesheet">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="{% static 'css/tasklist.css' %}">
+    </head>
+    <body>
+        <div id="headerbar">
+            <h1>TaskRPG</h1>
+        </div>
+        {% block content %}
+        {% endblock %}
+    </body>
+</html>

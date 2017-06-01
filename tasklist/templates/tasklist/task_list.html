@@ -1,17 +1,17 @@
-<html>
-    <head>
-        <title>TaskRPG</title>
-    </head>
-    <body>
-        <div id="headerbar">
-            <h1>TaskRPG</h1>
-        </div>
-        <div id="tasklist">
-            <ol>
-                {% for task in tasks %}
-                    <li>{{ task }}<h5> {{task.created_date}}</h5></li>
-                {% endfor %}
-            </ol>
-        </div>
-    </body>
-</html>
+{% extends 'tasklist/base.html' %}
+
+{% block content %}
+    <div id="tasklist">
+        <ul class="list-group">
+            {% for task in tasks %}
+                <li class="list-group-item">
+                    <div class="taskwrapper">
+                        <input type="checkbox" id="checkbox{{ forloop.counter }}">
+                        <h4>{{ task }}</h4>
+                        <p>{{task.created_date}}</p>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}
