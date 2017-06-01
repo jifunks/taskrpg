@@ -8,10 +8,9 @@
         </div>
         <div id="tasklist">
             <ol>
-                <li>Task 1</li>
-                <li>Task 2</li>
-                <li>Task 3</li>
-                <li>Task 4</li>
+                {% for task in tasks %}
+                    <li>{{ task }}<h5> {{task.created_date}}</h5></li>
+                {% endfor %}
             </ol>
         </div>
     </body>
