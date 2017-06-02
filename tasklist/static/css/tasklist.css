@@ -4,17 +4,40 @@ body {
 
 }
 
-#headerbar h1 {
+#headerbar {
+    position: relative;
+    width: 100%;
+    height: 100px;
     background-color: #00A0F5;
+    color: #FFF;
+    margin: 0;
+}
+
+#headerbar h1 {
+    float: left;
     color: #FFF;
     font-size: 4em;
     margin: 0;
-    padding: 10px 0 10px 20px;
+    display: inline;
+    vertical-align: middle;
+    line-height: 100px;
+    padding: 0 0 0 20px;
+}
+#headerbar p {
+    color: #FFF;
+    float: right;
+
+    padding: 5px 5px 5px 5px;
+}
+
+#headerbar a {
+    color: #3860a0;
 }
 
 #tasklist {
 
 }
+
 #tasklist ul{
     list-style-type: none;
     padding: 0;

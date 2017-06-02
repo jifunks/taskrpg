@@ -1,11 +1,6 @@
 {% extends 'tasklist/base.html' %}
 
 {% block content %}
-    {% if user.is_authenticated %}
-        howdy {{ user.username }}! <a href="{% url 'logout' %}">log out</a>
-    {% else %}
-        <a href="{% url 'login' %}">log in</a>
-    {% endif %}
     <div id="tasklist">
         <ul class="list-group">
             {% for task in tasks %}
@@ -13,7 +8,9 @@
                     <div class="taskwrapper">
                         <input type="checkbox" id="checkbox{{ forloop.counter }}">
                         <h4>{{ task }}</h4>
-                        <p>{{task.created_date}}</p>
+                        <p>{{ task.created_date }}</p>
+                        <p>{{ task.id }}</p>
+
                     </div>
                 </li>
             {% endfor %}
