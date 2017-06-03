@@ -11,19 +11,31 @@ from .models import Task
 from .forms import TaskForm, UserForm
 
 def task_list(request):
-    # filter so that we only see tasks created prior to now, order by date created
     if request.method == "POST":
-        form = TaskForm(request.POST)
-        if form.is_valid():
-            task = form.save(commit=False)
-            task.owner = request.user
-            task.published_date = timezone.now()
-            task.save()
-            return HttpResponseRedirect(reverse("task_list"))
+        if "add_task" in request.POST:
+            form = TaskForm(request.POST)
+            if form.is_valid():
+                task = form.save(commit=False)
+                task.owner = request.user
+                task.published_date = timezone.now()
+                task.save()
+                return HttpResponseRedirect(reverse("task_list"))
+        elif "delete_task" in request.POST:
+            print request.POST
+            # get ID from frontend somehow
+            # confirm task ID belongs to owner / authenticate somehow..
+            # delete task by id
+            # Task.objects.filter(id=2).delete()
+
+            pass
     else:
-        tasks = Task.objects.filter(created_date__lte=timezone.now()).order_by('created_date')
-        # TODO: handle form text here maybe?
+        tasks = Task.objects.filter(owner=request.user).order_by('created_date')
         return render(request, 'tasklist/task_list.html', {'tasks': tasks, 'form':TaskForm})
+
+def delete_task(request, task_id):
+    task = Task.objects.get(id=task_id)
+    task.delete()
+    return HttpResponse("true")
 
 
 def register(request):
