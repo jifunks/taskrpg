@@ -20,22 +20,12 @@ def task_list(request):
                 task.published_date = timezone.now()
                 task.save()
                 return HttpResponseRedirect(reverse("task_list"))
-        elif "delete_task" in request.POST:
-            print request.POST
-            # get ID from frontend somehow
-            # confirm task ID belongs to owner / authenticate somehow..
-            # delete task by id
-            # Task.objects.filter(id=2).delete()
-
-            pass
     else:
-        tasks = Task.objects.filter(owner=request.user).order_by('created_date')
-        return render(request, 'tasklist/task_list.html', {'tasks': tasks, 'form':TaskForm})
-
-def delete_task(request, task_id):
-    task = Task.objects.get(id=task_id)
-    task.delete()
-    return HttpResponse("true")
+        if request.user.is_authenticated():
+            tasks = Task.objects.filter(owner=request.user).order_by('created_date')
+            return render(request, 'tasklist/task_list.html', {'tasks': tasks, 'form':TaskForm})
+        else:
+            return HttpResponseRedirect(reverse("login"))
 
 
 def register(request):
@@ -82,3 +72,30 @@ def user_login(request):
 def user_logout(request):
     logout(request)
     return HttpResponseRedirect(reverse("task_list"))
+
+@login_required
+def delete_task(request, task_id):
+    task = Task.objects.get(id=task_id)
+    task.delete()
+    return HttpResponse("true")
+
+
+@login_required
+def add_task(request):
+    form = TaskForm(request.POST)
+    if form.is_valid():
+        task = form.save(commit=False)
+        task.owner = request.user
+        task.published_date = timezone.now()
+        task.save()
+        return HttpResponseRedirect(reverse("task_list"))
+
+        task_title = request.GET.get('title')
+    task_date = datetime.strptime(request.GET.get('date'),"%m/%d/%Y")
+    task_tags = request.GET.get('tags')
+    new_task = Task(title=task_title,due_date=task_date,user=request.user)
+    new_task.save()
+    for tag in task_tags.split(","): # add each tag
+        new_task.tags.add(tag)
+    new_task.save()
+    return HttpResponse(new_task.id)

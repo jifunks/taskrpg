@@ -1,6 +1,7 @@
 {% extends 'tasklist/base.html' %}
 
 {% block content %}
+    {% if user.is_authenticated %}
     <div id="tasklist">
         <ul class="list-group">
             {% for task in tasks %}
@@ -16,13 +17,16 @@
                 </li>
             {% endfor %}
         </ul>
-        {% if user.is_authenticated %}
         <form method="POST" class="post-form">
             {% csrf_token %}
             {{ form.as_p }}
             <button type="submit" class="save btn btn-default" name="add_task">Save</button>
         </form>
-        {% endif %}
     </div>
+    {% else %}
+    <div id="nologin">
+        <p>Please log in!</p>
+    </div>
+    {% endif %}
 
 {% endblock %}
