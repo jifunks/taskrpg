@@ -51,7 +51,6 @@ body {
     -ms-transition:0.2s;
     -moz-transition:0.2s;
     -webkit-transition:0.2s;
-    /* ...and now for the proper property */
     transition:0.2s;
 }
 

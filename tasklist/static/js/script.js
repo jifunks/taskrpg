@@ -1,5 +1,9 @@
 
-$("li").click(function (e) {
+$(window).on("load", function() {
+  $("body").removeClass("preload");
+});
+
+$(document).on('click', 'li', function (e) {
   // if has class strikethrough remove class else
   if ($(this).find("h4").hasClass('strikethrough')) {
     $(this).find("h4").removeClass('strikethrough');
@@ -7,10 +11,8 @@ $("li").click(function (e) {
     $(this).find("h4").addClass('strikethrough');
   }
   // TODO: ajax query to add completed property to task
-});
+  // TODO: don't strikethrough if clicking done button
 
-$(window).on("load", function() {
-  $("body").removeClass("preload");
 });
 
 function delete_task(task){
@@ -41,7 +43,8 @@ function get_task(task_id){
         url:"/get-task/"+task_id+"/",
         success: function(result){
           var html_result = $(result);
-          $(html_result).hide().appendTo(".list-group").fadeIn(100);
+          // fix this with angular at some point
+          $(html_result).hide().appendTo(".list-group").fadeIn(10);
           // $(".list-group").append(html_result);
           // $("#task-"+task_id).fadeIn(1000);
         }
