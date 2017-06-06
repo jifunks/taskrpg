@@ -7,6 +7,7 @@ from django.shortcuts import render, redirect
 from django.core.urlresolvers import reverse
 from django.utils import timezone
 from django.http import HttpResponseRedirect, HttpResponse
+from django.template import RequestContext
 from .models import Task
 from .forms import TaskForm, UserForm
 
@@ -75,6 +76,7 @@ def user_logout(request):
 
 @login_required
 def delete_task(request, task_id):
+    # TODO: make sure this can only be performed by own user
     task = Task.objects.get(id=task_id)
     task.delete()
     return HttpResponse("true")
@@ -82,20 +84,22 @@ def delete_task(request, task_id):
 
 @login_required
 def add_task(request):
-    form = TaskForm(request.POST)
-    if form.is_valid():
-        task = form.save(commit=False)
-        task.owner = request.user
-        task.published_date = timezone.now()
-        task.save()
-        return HttpResponseRedirect(reverse("task_list"))
-
-        task_title = request.GET.get('title')
-    task_date = datetime.strptime(request.GET.get('date'),"%m/%d/%Y")
-    task_tags = request.GET.get('tags')
-    new_task = Task(title=task_title,due_date=task_date,user=request.user)
-    new_task.save()
-    for tag in task_tags.split(","): # add each tag
-        new_task.tags.add(tag)
+    this_task_text = request.GET.get('text')
+    new_task = Task(task_text=this_task_text)
+    new_task.published_date = timezone.now()
+    new_task.owner = request.user
+    new_task.published_date = timezone.now()
     new_task.save()
     return HttpResponse(new_task.id)
+
+@login_required
+def get_task(request,task_id):
+    task = Task.objects.get(id=task_id)
+    ctx = {"task":task, "created_date":task.created_date, "id":task.id}
+    print ctx
+    if task:
+        return render(request, 'tasklist/new_task.html', ctx)
+        # return render("new_task.html", ctx, context_instance=RequestContext(request))
+
+    else:
+        return HttpResponse("false")

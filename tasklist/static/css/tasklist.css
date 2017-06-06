@@ -82,8 +82,7 @@ body {
 
 }
 
-.taskwrapper input[type="checkbox"] {
-    position: relative;
-
+.strikethrough {
+    text-decoration: line-through;
+    opacity: 0.5;
 }
-

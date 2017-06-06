@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 
 
 class TaskForm(forms.ModelForm):
+    # TODO: is this still needed after switching to AJAX?
     class Meta:
         model = Task
         fields = ('task_text',)
