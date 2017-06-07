@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.core.urlresolvers import reverse
 from django.utils import timezone
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.template import RequestContext
 from .models import Task
 from .forms import TaskForm, UserForm
@@ -81,25 +81,40 @@ def delete_task(request, task_id):
     task.delete()
     return HttpResponse("true")
 
-
 @login_required
 def add_task(request):
     this_task_text = request.GET.get('text')
-    new_task = Task(task_text=this_task_text)
-    new_task.published_date = timezone.now()
-    new_task.owner = request.user
-    new_task.published_date = timezone.now()
-    new_task.save()
-    return HttpResponse(new_task.id)
+    if this_task_text:
+        new_task = Task(task_text=this_task_text)
+        new_task.published_date = timezone.now()
+        new_task.owner = request.user
+        new_task.published_date = timezone.now()
+        new_task.save()
+        return HttpResponse(new_task.id)
+    else:
+        return HttpResponse("false")
+
 
 @login_required
 def get_task(request,task_id):
-    task = Task.objects.get(id=task_id)
-    ctx = {"task":task, "created_date":task.created_date, "id":task.id}
-    print ctx
-    if task:
+    try:
+        task = Task.objects.get(id=task_id)
+        ctx = {"task":task, "created_date":task.created_date, "id":task.id}
         return render(request, 'tasklist/new_task.html', ctx)
         # return render("new_task.html", ctx, context_instance=RequestContext(request))
+    except Exception as e:
+        return HttpResponse(e)
 
-    else:
-        return HttpResponse("false")
+@login_required
+def toggle_task(request,task_id):
+    try:
+        task = Task.objects.get(id=task_id)
+        task.completed = not task.completed
+        print(task.completed)
+        task.save()
+        ctx = {"task_id":task.id}
+        return JsonResponse(ctx)
+        # return render("new_task.html", ctx, context_instance=RequestContext(request))
+    except Exception as e:
+        return HttpResponse(e)
+

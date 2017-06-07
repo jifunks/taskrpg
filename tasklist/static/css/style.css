@@ -4,6 +4,10 @@ body {
 
 }
 
+#main {
+    margin: 10px 10px 10px 10px;
+}
+
 #headerbar {
     position: relative;
     width: 100%;
@@ -27,7 +31,7 @@ body {
     color: #FFF;
     float: right;
 
-    padding: 5px 5px 5px 5px;
+    padding: 10px 10px 10px 10px;
 }
 
 #headerbar a {
@@ -36,6 +40,9 @@ body {
 
 #tasklist {
 
+}
+
+#taskform {
 }
 
 #tasklist ul{
@@ -81,7 +88,7 @@ body {
 
 }
 
-.strikethrough {
+.completed {
     text-decoration: line-through;
     opacity: 0.5;
 }
