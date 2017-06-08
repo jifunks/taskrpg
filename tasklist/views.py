@@ -110,7 +110,6 @@ def toggle_task(request,task_id):
     try:
         task = Task.objects.get(id=task_id)
         task.completed = not task.completed
-        print(task.completed)
         task.save()
         ctx = {"task_id":task.id}
         return JsonResponse(ctx)

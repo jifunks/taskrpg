@@ -70,11 +70,5 @@ $(document).on('click', 'li', function (e) {
   }
   var this_element = $(this).attr('id').split("-")[1];
   var returned_id = toggle_task_completion(this_element);
-
-  // API call
-  // if ($(this).find("h4").hasClass('strikethrough')) {
-  //   $(this).find("h4").removeClass('strikethrough');
-  // } else {
-  //   $(this).find("h4").addClass('strikethrough');
-  // }
+git
 });
