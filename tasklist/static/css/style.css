@@ -6,6 +6,8 @@ body {
 
 #main {
     margin: 10px 10px 10px 10px;
+    padding: 10px 10px 10px 10px;
+
 }
 
 #headerbar {
@@ -43,12 +45,16 @@ body {
 }
 
 #taskform {
+
+}
+
+.form-control {
+    font-size: 1.3em;
 }
 
 #tasklist ul{
     list-style-type: none;
     padding: 0;
-    margin: 10px 10px 10px 10px;
 }
 
 #tasklist li {
@@ -75,6 +81,7 @@ body {
     font-size: 1.5em;
     display: inline;
     vertical-align: middle;
+    word-wrap: break-word;
 }
 
 .taskwrapper p {

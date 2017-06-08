@@ -20,7 +20,7 @@
         <form onsubmit="add_task();return false;" id="new_task_form" class="form-horizontal">
             {% csrf_token %}
             <div class="controls">
-                <input type="text" placeholder="Enter Task Text" id="newtask-text" required/>
+                <input type="text" placeholder="Enter Task Text" id="newtask-text" class="form-control" required/>
             </div>
             <div class="control-group">
                 <label class="control-label"></label>
