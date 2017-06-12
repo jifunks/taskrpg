@@ -2,15 +2,33 @@
 
 {% block content %}
     {% if user.is_authenticated %}
+
+    <div id="timerwrapper" class="jumbotron text-center ng-cloak" ng-app="pomodoro" ng-controller="mainController">
+        <div id="timerclock">
+                {% verbatim %}
+                <h1>{{sandclock|date:'mm:ss'}}</h1>
+                {% endverbatim %}
+        </div>
+        <div id="prog-bar"></div>
+        <div id="timercontrols" class="control-buttons">
+            <button type="button" class="btn btn-default" ng-click="start()">start</button>
+            <button type="button" class="btn btn-default" ng-click="pause()">pause</button>
+            <button type="button" class="btn btn-default" ng-click="reset()">reset</button>
+        </div>
+    </div>
     <div id="tasklist">
         <ul class="list-group">
             {% for task in tasks %}
                 <li class="list-group-item" id="task-{{ task.id }}">
                     <div class="taskwrapper">
-                        <h4 class="{% if task.completed %}completed{% endif %}">{{ task }}</h4>
-                        <p>{{ task.created_date }}</p>
-                        <p>ID#:{{ task.id }}</p>
-                        <button onclick="delete_task('{{ task.id }}');" class="btn">Done</button>
+                        <div class="task-left">
+                            <h4 class="{% if task.completed %}completed{% endif %}">{{ task }}</h4>
+                        </div>
+                        <div class="task-right">
+                            <p>{{ task.created_date|date:'Y-m-d H:i' }}</p>
+                            <p>ID#:{{ task.id }}</p>
+                            <button onclick="delete_task('{{ task.id }}');" class="btn">Done</button>
+                        </div>
                     </div>
                 </li>
             {% endfor %}

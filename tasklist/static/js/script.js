@@ -1,6 +1,8 @@
 
 $(window).on("load", function() {
   $("body").removeClass("preload");
+  $('#prog-bar').html('<div class="progress progress-striped"><div class="progress-bar progress-work" style="width: 0%;"><div></div>');
+
 });
 
 
@@ -27,7 +29,7 @@ function add_task(){
       }
     });
   } else {
-    alert("Easter Egg 001 Found")
+    alert("Easter Egg #001 Found")
   }
 
 }
@@ -71,3 +73,69 @@ $(document).on('click', 'li', function (e) {
   var this_element = $(this).attr('id').split("-")[1];
   var returned_id = toggle_task_completion(this_element);
 });
+
+
+
+var app = angular.module('pomodoro', []);
+
+app.controller('mainController', ['$scope', '$interval', function($scope, $interval) {
+
+  var chronos;
+  var max_time = 25*60*1000;
+  $scope.sandclock = 25*60*1000;
+  $scope.start = start;
+  $scope.pause= pause;
+  $scope.reset = reset;
+  $scope.brk = brk;
+
+
+ function start() {
+   if(!chronos) {
+     chronos = $interval(function() {
+       if($scope.sandclock > 0) {
+         $scope.sandclock -= 1000;
+         var prog = ((max_time - $scope.sandclock)/max_time) * 100
+        //  $('#prog-bar').html('<div class="progress progress-striped"><div class="progress-bar ' + progress_status + '" style="width:' + prog / max_time * 100 + '%;"><div></div>');
+         $('#prog-bar').html('<div class="progress progress-striped"><div class="progress-bar progress-work" style="width:' + prog + '%;"><div></div>');
+
+       } else {
+         stop();
+         brk();
+       }
+     }, 1000);
+   }
+ }
+
+
+ function pause() {
+   console.log("Ok, it's paused Lazy!!!!");
+   stop();
+ };
+
+  function brk() {
+    $scope.sandclock = 5*60*1000;
+
+    chronos = $interval(function() {
+      if($scope.sandclock > 0) {
+        $scope.sandclock -= 1000;
+      } else {
+        stop();
+        reset();
+      }
+    }, 1000);
+  }
+
+  function reset() {
+    $scope.sandclock = 25*60*1000;
+    stop();
+  };
+
+  // cancel interval
+
+  function stop() {
+    $interval.cancel(chronos);
+    chronos = undefined;
+  }
+
+
+}]);

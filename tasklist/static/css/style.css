@@ -1,43 +1,19 @@
 
 body {
-    font-family: 'VT323', monospace;
-
+font-family: 'Ubuntu Mono', monospace;
 }
+
 
 #main {
     margin: 10px 10px 10px 10px;
     padding: 10px 10px 10px 10px;
-
 }
 
-#headerbar {
-    position: relative;
-    width: 100%;
-    height: 100px;
-    background-color: #00A0F5;
-    color: #FFF;
-    margin: 0;
-}
+.navbar {
 
-#headerbar h1 {
-    float: left;
-    color: #FFF;
-    font-size: 4em;
-    margin: 0;
-    display: inline;
-    vertical-align: middle;
-    line-height: 100px;
-    padding: 0 0 0 20px;
 }
-#headerbar p {
-    color: #FFF;
-    float: right;
-
-    padding: 10px 10px 10px 10px;
-}
-
-#headerbar a {
-    color: #3860a0;
+.navbar p {
+    padding-left: 15px;
 }
 
 #tasklist {
@@ -49,7 +25,7 @@ body {
 }
 
 .form-control {
-    font-size: 1.3em;
+    font-size: 1.2em;
 }
 
 #tasklist ul{
@@ -58,7 +34,7 @@ body {
 }
 
 #tasklist li {
-    font-size: 1.5em;
+    font-size: 1.3em;
     margin: 0 0 8px 0;
     -o-transition:0.2s;
     -ms-transition:0.2s;
@@ -73,6 +49,7 @@ body {
 
 .taskwrapper {
     text-transform: lowercase;
+    height: 30px;
 
 }
 
@@ -89,13 +66,29 @@ body {
     font-size: 0.75em;
     display: inline;
     color: #CCC;
-    float:right;
     line-height: 33px;
     vertical-align: middle;
+}
+
+.task-right {
+    float: right;
+}
+
+.task-left {
+    float: left;
 
 }
 
 .completed {
     text-decoration: line-through;
     opacity: 0.5;
+}
+
+
+.progress-work {
+  background-color: #0099DD;
+}
+
+.progress-rest {
+  background-color: #F6FA9C;
 }

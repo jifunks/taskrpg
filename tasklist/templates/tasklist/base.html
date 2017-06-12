@@ -1,28 +1,50 @@
 {% load staticfiles %}
 
-<html>
+<html lang="en">
     <head>
-        <title>TaskRPG</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <link href="https://fonts.googleapis.com/css?family=VT323" rel="stylesheet">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>TaskRPG</title>
+        <link href='https://fonts.googleapis.com/css?family=Ubuntu+Mono' rel='stylesheet' type='text/css'>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
         <link rel="stylesheet" href="{% static 'css/style.css' %}">
     </head>
     <body>
-        <div id="headerbar">
-            <h1>TaskRPG</h1>
-            {% if user.is_authenticated %}
-                <p>
-                {{ user.username }} // <a href="{% url 'logout' %}">log out</a>
-                </p>
-            {% elif request.get_full_path != "/login/" %}
-                <p>
-                <a href="{% url 'login' %}">log in</a>
-                </p>
-            {% endif %}
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">TaskRPG</a>
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            </div>
+            <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="#">Home</a></li>
+                    <li><a href="#">Page 1</a></li>
+                    <li><a href="#">Page 2</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    {% if user.is_authenticated %}
+                    <p class="navbar-text">{{ user.username }}</p>
+                    <li><a href="{% url 'logout' %}"><span class="glyphicon glyphicon-log-out"></span> log out</a></li>
+
+                    {% else %}
+
+                    <li><a href="{% url 'register' %}"><span class="glyphicon glyphicon-user"></span> sign up</a></li>
+                    <li><a href="{% url 'login' %}"><span class="glyphicon glyphicon-log-in"></span> log in</a></li>
+                    {% endif %}
+
+                </ul>
+            </div>
         </div>
+    </nav>
+
         <div id="main">
             {% block content %}
             {% endblock %}
