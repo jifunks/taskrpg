@@ -83,8 +83,8 @@ app.controller('mainController', ['$scope', '$interval', function($scope, $inter
   var chronos;
   // var max_time = 25*60*1000;
   // $scope.sandclock = 25*60*1000;
-  var max_time = 0.1*60*1000;
-  $scope.sandclock = 0.1*60*1000;
+  var max_time = 10*1000;
+  $scope.sandclock = max_time;
   $scope.start = start;
   $scope.pause= pause;
   $scope.reset = reset;
@@ -121,6 +121,8 @@ app.controller('mainController', ['$scope', '$interval', function($scope, $inter
   function reset() {
     // reset timer to maximum time & pause
     progress_status = 'progress-work';
+    $(".jumbotron").css("background-color", "#eee");
+    $('#status-text').text("let's work!");
     $scope.timer_state = 1;
     $scope.next_state = 2;
     max_time = 10*1000;
@@ -131,6 +133,9 @@ app.controller('mainController', ['$scope', '$interval', function($scope, $inter
   function set_break() {
     // reset timer to break time & pause
     progress_status = 'progress-rest';
+    $(".jumbotron").css("background-color", " #e6f7ff");
+    $('#status-text').text("let's break!");
+
     $scope.timer_state = 2;
     $scope.next_state = 1;
     max_time = 5*1000;
@@ -157,5 +162,4 @@ app.controller('mainController', ['$scope', '$interval', function($scope, $inter
       reset();
     }
   }
-
 }]);

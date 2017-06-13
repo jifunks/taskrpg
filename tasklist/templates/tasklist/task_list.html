@@ -4,6 +4,7 @@
     {% if user.is_authenticated %}
 
     <div id="timerwrapper" class="jumbotron text-center ng-cloak" ng-app="pomodoro" ng-controller="mainController">
+        <div id="status-text">let's work!</div>
         <div id="timerclock">
                 {% verbatim %}
                 <h1>{{sandclock|date:'mm:ss'}}</h1>

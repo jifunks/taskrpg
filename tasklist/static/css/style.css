@@ -92,3 +92,19 @@ font-family: 'Ubuntu Mono', monospace;
 .progress-rest {
   background-color: #00DD99;
 }
+
+.jumbotron {
+    -o-transition:0.2s;
+    -ms-transition:0.2s;
+    -moz-transition:0.2s;
+    -webkit-transition:0.2s;
+    transition:0.2s;
+}
+
+#status-text {
+    font-size: 2.4em;
+}
+
+.ng-binding {
+    margin: 0 0 15px 0;
+}
