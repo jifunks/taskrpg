@@ -81,61 +81,81 @@ var app = angular.module('pomodoro', []);
 app.controller('mainController', ['$scope', '$interval', function($scope, $interval) {
 
   var chronos;
-  var max_time = 25*60*1000;
-  $scope.sandclock = 25*60*1000;
+  // var max_time = 25*60*1000;
+  // $scope.sandclock = 25*60*1000;
+  var max_time = 0.1*60*1000;
+  $scope.sandclock = 0.1*60*1000;
   $scope.start = start;
   $scope.pause= pause;
   $scope.reset = reset;
-  $scope.brk = brk;
+  $scope.timer_state = -1; // -1 = init, 0 = pause, 1 = 25m timer, 2 = 5m break
+  $scope.next_state = 1;
 
+  function start() {
+    // this is hit by a BUTTON.
+    // Should RESUME timer if timer has been paused, and should INITIALIZE/START timer if it hasn't been hit yet
+    //
+    if ($scope.timer_state == -1){
+      reset();
+      // start timer
+      timer_countdown();
+    } else if ($scope.timer_state == 0) { // in case of pause
+      timer_countdown();
+    }
+  }
 
- function start() {
-   if(!chronos) {
-     chronos = $interval(function() {
-       if($scope.sandclock > 0) {
-         $scope.sandclock -= 1000;
-         var prog = ((max_time - $scope.sandclock)/max_time) * 100
-        //  $('#prog-bar').html('<div class="progress progress-striped"><div class="progress-bar ' + progress_status + '" style="width:' + prog / max_time * 100 + '%;"><div></div>');
-         $('#prog-bar').html('<div class="progress progress-striped"><div class="progress-bar progress-work" style="width:' + prog + '%;"><div></div>');
-
-       } else {
-         stop();
-         brk();
-       }
-     }, 1000);
-   }
- }
-
-
- function pause() {
-   console.log("Ok, it's paused Lazy!!!!");
-   stop();
- };
-
-  function brk() {
-    $scope.sandclock = 5*60*1000;
-
+  function timer_countdown() {
+    // This will be a general countdown timer - NOT specific to work or break period
     chronos = $interval(function() {
       if($scope.sandclock > 0) {
         $scope.sandclock -= 1000;
+        var prog = ((max_time - $scope.sandclock)/max_time) * 100
+        //  $('#prog-bar').html('<div class="progress progress-striped"><div class="progress-bar ' + progress_status + '" style="width:' + prog / max_time * 100 + '%;"><div></div>');
+        $('#prog-bar').html('<div class="progress progress-striped"><div class="progress-bar '+ progress_status + '" style="width:' + prog + '%;"><div></div>');
       } else {
         stop();
-        reset();
       }
     }, 1000);
   }
 
   function reset() {
-    $scope.sandclock = 25*60*1000;
-    stop();
+    // reset timer to maximum time & pause
+    progress_status = 'progress-work';
+    $scope.timer_state = 1;
+    $scope.next_state = 2;
+    max_time = 10*1000;
+    $scope.sandclock = max_time;
+    pause();
   };
 
-  // cancel interval
+  function set_break() {
+    // reset timer to break time & pause
+    progress_status = 'progress-rest';
+    $scope.timer_state = 2;
+    $scope.next_state = 1;
+    max_time = 5*1000;
+    $scope.sandclock = max_time;
+    pause();
+  }
 
-  function stop() {
+  // cancel interval
+  function pause(){
+    $scope.timer_state = 0;
     $interval.cancel(chronos);
     chronos = undefined;
   }
 
+  function stop() {
+    // during stopped period, timer will stop and not resume until start is pressed
+    // needs to set timer for screen!!
+    // needs to set - if previous timer state was 1 (work period) then next state should be 2 (rest period)
+    $interval.cancel(chronos);
+    chronos = undefined;
+    if ($scope.next_state == 2){
+      set_break();
+    } else if ($scope.next_state == 1) {
+      reset();
+    }
+  }
 
 }]);
