@@ -14,6 +14,7 @@ class Task(models.Model):
     created_date = models.DateTimeField(default=timezone.now)
     completed = models.BooleanField(default=False)
     # TODO: due date, priority?
+    # TODO: full_clean() on object before saving to validate, then catch ValidationError.
 
     def add_task(self):
         self.save()

@@ -17,6 +17,7 @@ function delete_task(task){
     });
 };
 
+
 function add_task(){
   text = $("#newtask-text").val();
   if (text) {
@@ -65,8 +66,8 @@ function toggle_task_completion(task_id){
 }
 
 $(document).on('click', 'li', function (e) {
-  // prevent toggle from done button
-  if ($(e.target).is("button")){
+  // prevent toggle from done button clicking
+  if ($(e.target).is("button") || $(e.target).is("span")){
     e.preventDefault();
     return;
   }
@@ -83,35 +84,38 @@ app.controller('mainController', ['$scope', '$interval', function($scope, $inter
   var chronos;
   // var max_time = 25*60*1000;
   // $scope.sandclock = 25*60*1000;
-  var max_time = 10*1000;
+  var max_time = 25*60*1000;
   $scope.sandclock = max_time;
   $scope.start = start;
   $scope.pause= pause;
   $scope.reset = reset;
   $scope.timer_state = -1; // -1 = init, 0 = pause, 1 = 25m timer, 2 = 5m break
   $scope.next_state = 1;
+  $scope.progress_status = 'progress-work'
 
   function start() {
     // this is hit by a BUTTON.
+    console.log($scope.timer_state);
     // Should RESUME timer if timer has been paused, and should INITIALIZE/START timer if it hasn't been hit yet
-    //
     if ($scope.timer_state == -1){
+      // TODO: this reset is asynchronous and might not finish setting $scope.progress_status before starting timer_countdown
       reset();
+      timer_countdown()
       // start timer
-      timer_countdown();
+      // timer_countdown needs to be run once reset has completed.
     } else if ($scope.timer_state == 0) { // in case of pause
       timer_countdown();
     }
   }
 
   function timer_countdown() {
+    console.log($scope.progress_status);
     // This will be a general countdown timer - NOT specific to work or break period
     chronos = $interval(function() {
       if($scope.sandclock > 0) {
         $scope.sandclock -= 1000;
         var prog = ((max_time - $scope.sandclock)/max_time) * 100
-        //  $('#prog-bar').html('<div class="progress progress-striped"><div class="progress-bar ' + progress_status + '" style="width:' + prog / max_time * 100 + '%;"><div></div>');
-        $('#prog-bar').html('<div class="progress progress-striped"><div class="progress-bar '+ progress_status + '" style="width:' + prog + '%;"><div></div>');
+        $('#prog-bar').html('<div class="progress progress-striped"><div class="progress-bar '+ $scope.progress_status + '" style="width:' + prog + '%;"><div></div>');
       } else {
         stop();
       }
@@ -120,30 +124,34 @@ app.controller('mainController', ['$scope', '$interval', function($scope, $inter
 
   function reset() {
     // reset timer to maximum time & pause
-    progress_status = 'progress-work';
+    // adding this timer to break it so i have to fix the asynch issue
+    $scope.progress_status = 'progress-work';
     $(".jumbotron").css("background-color", "#eee");
     $('#status-text').text("let's work!");
     $scope.timer_state = 1;
     $scope.next_state = 2;
-    max_time = 10*1000;
+    // max_time = 10*1000; //debug
+    max_time = 25*60*1000;
     $scope.sandclock = max_time;
     pause();
   };
 
   function set_break() {
     // reset timer to break time & pause
-    progress_status = 'progress-rest';
+    $scope.progress_status = 'progress-rest';
     $(".jumbotron").css("background-color", " #e6f7ff");
     $('#status-text').text("let's break!");
 
     $scope.timer_state = 2;
     $scope.next_state = 1;
-    max_time = 5*1000;
+    max_time = 5*60*1000;
+
+    // max_time = 5*1000; //debug
     $scope.sandclock = max_time;
     pause();
   }
 
-  // cancel interval
+  // cancel interval temporarily
   function pause(){
     $scope.timer_state = 0;
     $interval.cancel(chronos);
@@ -156,6 +164,16 @@ app.controller('mainController', ['$scope', '$interval', function($scope, $inter
     // needs to set - if previous timer state was 1 (work period) then next state should be 2 (rest period)
     $interval.cancel(chronos);
     chronos = undefined;
+    Push.create('Time!', {
+      body: 'Your timer is up!',
+      icon: {
+        x16: 'static/img/smug.png',
+        x32: 'static/img/smug.png'
+      },
+      timeout: 10000,
+      onClick: function(x) {window.focus(); this.close();},
+
+    });
     if ($scope.next_state == 2){
       set_break();
     } else if ($scope.next_state == 1) {

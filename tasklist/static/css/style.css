@@ -59,6 +59,7 @@ font-family: 'Ubuntu Mono', monospace;
     display: inline;
     vertical-align: middle;
     word-wrap: break-word;
+
 }
 
 .taskwrapper p {
@@ -70,12 +71,28 @@ font-family: 'Ubuntu Mono', monospace;
     vertical-align: middle;
 }
 
+.taskwrapper button {
+    background-color: #e55;
+    color: #fff;
+    transition: 0.5s;
+}
+
+.taskwrapper button:hover{
+    color: #fff;
+    transition: 0.5s;
+    -moz-box-shadow:    inset 0 0 10px #800;
+    -webkit-box-shadow: inset 0 0 10px #800;
+    box-shadow:         inset 0 0 10px #800;
+
+}
+
 .task-right {
     float: right;
 }
 
 .task-left {
     float: left;
+    max-width: 75%
 
 }
 
@@ -99,7 +116,10 @@ font-family: 'Ubuntu Mono', monospace;
     -moz-transition:0.2s;
     -webkit-transition:0.2s;
     transition:0.2s;
+    border-radius: 5px !important;
+
 }
+
 
 #status-text {
     font-size: 2.4em;
