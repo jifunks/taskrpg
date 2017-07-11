@@ -26,7 +26,7 @@ SECRET_KEY = '9%*ddrvxekxqd92^@hlyo7tn!jjpe#%%!frp1je$i0$w#okefq'
 DEBUG = True
 
 # TODO: add real host name here once deployed!
-ALLOWED_HOSTS = ['127.0.0.1','localhost']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
