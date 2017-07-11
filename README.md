@@ -1,4 +1,6 @@
 # TaskRPG
+![Screenshot](http://i.imgur.com/NqBMXNV.png)
+
 
 ## what is TaskRPG?
 TaskRPG is a "tomato timer" based task management system. The goal is quick and easy to-do list management with a built in timer, all on one page.
