@@ -92,6 +92,7 @@ app.controller('mainController', ['$scope', '$interval', function($scope, $inter
   $scope.timer_state = -1; // -1 = init, 0 = pause, 1 = 25m timer, 2 = 5m break
   $scope.next_state = 1;
   $scope.progress_status = 'progress-work'
+  $('#pausebutton').attr('disabled','disabled');
 
   function start() {
     // this is hit by a BUTTON.
@@ -112,6 +113,9 @@ app.controller('mainController', ['$scope', '$interval', function($scope, $inter
 
   function timer_countdown() {
     // This will be a general countdown timer - NOT specific to work or break period
+    $('#startbutton').attr('disabled','disabled');
+    $('#pausebutton').removeAttr('disabled');
+
     chronos = $interval(function() {
       if($scope.sandclock > 0) {
         $scope.sandclock -= 1000;
@@ -127,6 +131,7 @@ app.controller('mainController', ['$scope', '$interval', function($scope, $inter
     // reset timer to maximum time & pause
     // adding this timer to break it so i have to fix the asynch issue
     $scope.progress_status = 'progress-work';
+    $('#startbutton').removeAttr('disabled');
     $(".jumbotron").css("background-color", "#eee");
     $('#status-text').text("let's work!");
     $scope.timer_state = 1;
@@ -155,6 +160,8 @@ app.controller('mainController', ['$scope', '$interval', function($scope, $inter
   // cancel interval temporarily
   function pause(){
     if ($scope.timer_state != 0) {
+      $('#pausebutton').attr('disabled','disabled');
+      $('#startbutton').removeAttr('disabled');
       $scope.timer_state = 0;
       $interval.cancel(chronos);
       chronos = undefined;
