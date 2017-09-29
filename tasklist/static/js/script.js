@@ -95,21 +95,22 @@ app.controller('mainController', ['$scope', '$interval', function($scope, $inter
 
   function start() {
     // this is hit by a BUTTON.
-    console.log($scope.timer_state);
     // Should RESUME timer if timer has been paused, and should INITIALIZE/START timer if it hasn't been hit yet
     if ($scope.timer_state == -1){
-      // TODO: this reset is asynchronous and might not finish setting $scope.progress_status before starting timer_countdown
       reset();
-      timer_countdown()
-      // start timer
-      // timer_countdown needs to be run once reset has completed.
+      $scope.timer_state = 1;
+      timer_countdown();
     } else if ($scope.timer_state == 0) { // in case of pause
+      if ($scope.progress_status == 'progress-work') {
+        $scope.timer_state = 1;
+      } else if ($scope.progress_status == 'progress-rest') {
+        $scope.timer_state = 2;
+      }
       timer_countdown();
     }
   }
 
   function timer_countdown() {
-    console.log($scope.progress_status);
     // This will be a general countdown timer - NOT specific to work or break period
     chronos = $interval(function() {
       if($scope.sandclock > 0) {
@@ -153,9 +154,11 @@ app.controller('mainController', ['$scope', '$interval', function($scope, $inter
 
   // cancel interval temporarily
   function pause(){
-    $scope.timer_state = 0;
-    $interval.cancel(chronos);
-    chronos = undefined;
+    if ($scope.timer_state != 0) {
+      $scope.timer_state = 0;
+      $interval.cancel(chronos);
+      chronos = undefined;
+    }
   }
 
   function stop() {
